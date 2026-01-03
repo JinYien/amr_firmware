@@ -199,7 +199,7 @@ void cybergearController::update_motor_params(const uint8_t motor_no, const char
         break;
     case 0x13:
         this->set_mech_position_to_zero(motor_no);
-        sprintf(str, "Cybergear %d: zero motor", motor_no);
+        sprintf(str, "Cybergear %d: set zero position", motor_no);
         ser->send_msg(str);
         break;
     case 0x14:
