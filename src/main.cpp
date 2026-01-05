@@ -90,7 +90,7 @@ void periodic_loop()
     leftMotor.update(myEncoder.get_left_angle());
     myOutputs.set_torque(rightMotor.get_torque_command_Nm(), leftMotor.get_torque_command_Nm());
 
-    const double system_mode = static_cast<double>(digitalRead(17));
+    const double stop_button = static_cast<double>(!digitalRead(17));
     const double cybergear_position = myCybergearController.motors[0].position;
     const double cybergear_velocity = myCybergearController.motors[0].velocity;
     const double elevation_angle = myAdc.signal_values[ANGLE_ADC_CH];
@@ -99,7 +99,7 @@ void periodic_loop()
     const double force_z = myAdc.signal_values[FORCE_Z_ADC_CH];
 
     const double data[NUM_OF_VARIABLES] = {
-        system_mode,
+        stop_button,
         rightMotor.get_angle_deg(),
         leftMotor.get_angle_deg(),
         rightMotor.get_speed_deg_per_sec(),
