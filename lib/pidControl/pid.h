@@ -7,7 +7,7 @@
 class PID {
 public:
     explicit PID(double sampling_period = 1E-3, double d_filter_cutoff_freq = 30);
-    double Kp = 1;
+    double Kp = 0.01;
     double Ki = 0;
     double Kd = 0;
     double Umax = 9999;

@@ -49,7 +49,7 @@ void setup()
     myOutputs.setup();
 
     // Digital Input
-    pinMode(17, INPUT);
+    pinMode(17, INPUT_PULLDOWN);
 
     // SPI
     SPI.begin();
@@ -86,11 +86,18 @@ void periodic_loop()
     myEncoder.update();
     myAdc.update();
 
+    const double stop_button = static_cast<double>(!digitalRead(17));
+    if (stop_button > 0.5)
+    {
+        rightMotor.target_speed_deg_per_sec = 0.0;
+        leftMotor.target_speed_deg_per_sec = 0.0;
+        myCybergearController.write_control_params(0, CONTROL_PARAMS::SPEED_REF, 0.0f, false);
+    }
+
     rightMotor.update(myEncoder.get_right_angle());
     leftMotor.update(myEncoder.get_left_angle());
     myOutputs.set_torque(rightMotor.get_torque_command_Nm(), leftMotor.get_torque_command_Nm());
 
-    const double stop_button = static_cast<double>(!digitalRead(17));
     const double cybergear_position = myCybergearController.motors[0].position;
     const double cybergear_velocity = myCybergearController.motors[0].velocity;
     const double elevation_angle = myAdc.signal_values[ANGLE_ADC_CH];
