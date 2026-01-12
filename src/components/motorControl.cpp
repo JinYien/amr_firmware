@@ -121,16 +121,19 @@ void motorControl::change_params(char const id, int64_t const val_i, const doubl
         break;
     case 0x42:
         this->speed_pid.Kp = val_f;
+        this->speed_pid.clear_pid_storage();
         strcat(str, "Speed P gain set to %f.");
         ser->send_msg(str, val_f);
         break;
     case 0x43:
         this->speed_pid.Ki = val_f;
+        this->speed_pid.clear_pid_storage();
         strcat(str, "Speed I gain set to %f.");
         ser->send_msg(str, val_f);
         break;
     case 0x44:
         this->speed_pid.Kd = val_f;
+        this->speed_pid.clear_pid_storage();
         strcat(str, "Speed D gain set to %f.");
         ser->send_msg(str, val_f);
         break;

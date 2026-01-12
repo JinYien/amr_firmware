@@ -23,12 +23,15 @@ double PID::compute_output(const double ref, const double feedback) {
 
     const double pTerm = this->Kp * error;
 
-    const double iTerm = this->Ki * this->satRecord * error + this->iStorage;
+    const double iTerm = this->iStorage + this->Ki * this->sampling_period * error * this->satRecord;
     this->iStorage = iTerm;
 
-    this->dStorage2 = this->Kd * this->dFilterCoeff1 * error - this->dStorage2;
-    const double dTerm = this->dStorage2 + this->dStorage1;
-    this->dStorage1 = dTerm * this->dFilterCoeff2;
+    const double error_derivative = (error - this->previous_error) / this->sampling_period;
+    const double dFiltered = this->dFilterCoeff1 * error_derivative + this->dFilterCoeff2 * this->dStorage1;
+    this->dStorage1 = dFiltered;
+    const double dTerm = this->Kd * dFiltered;
+
+    this->previous_error = error;
 
     double preSatOutput = pTerm + iTerm + dTerm;
     const double output = min(max(preSatOutput, this->Umin), this->Umax);
@@ -42,4 +45,5 @@ void PID::clear_pid_storage() {
     this->dStorage1 = 0;
     this->dStorage2 = 0;
     this->satRecord = 0;
+    this->previous_error = 0;
 }

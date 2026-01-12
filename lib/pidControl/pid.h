@@ -7,7 +7,7 @@
 class PID {
 public:
     explicit PID(double sampling_period = 1E-3, double d_filter_cutoff_freq = 30);
-    double Kp = 0.01;
+    double Kp = 0;
     double Ki = 0;
     double Kd = 0;
     double Umax = 9999;
@@ -25,6 +25,7 @@ private:
     double dFilterCoeff1 = 1;
     double dFilterCoeff2 = 0;
     double satRecord = 1;
+    double previous_error = 0;
     void update_filter_coeffs();
 };
 
