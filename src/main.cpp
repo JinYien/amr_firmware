@@ -91,7 +91,8 @@ void periodic_loop()
     {
         rightMotor.target_speed_deg_per_sec = 0.0;
         leftMotor.target_speed_deg_per_sec = 0.0;
-        myCybergearController.write_control_params(0, CONTROL_PARAMS::SPEED_REF, 0.0f, false);
+        myCybergearController.reset_motor(0, false);
+        myCybergearController.set_mech_position_to_zero(0, false);
     }
 
     rightMotor.update(myEncoder.get_right_angle());
