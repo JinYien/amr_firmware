@@ -63,7 +63,10 @@ void serialManager::parse_serial()
     memcpy(&val_i, &this->rx_buffer.data[2], RX_BUFFER_SIZE - 3);
     memcpy(&val_f, &this->rx_buffer.data[2], RX_BUFFER_SIZE - 3);
 
-    on_complete(id1, id2, val_i, val_f);
+    if (on_complete)
+    {
+        on_complete(id1, id2, val_i, val_f);
+    }
 }
 
 void serialManager::fill_chunk(const double variables[NUM_OF_VARIABLES])
@@ -109,35 +112,36 @@ void serialManager::send_msg()
 
 void serialManager::send_msg(const char *msg)
 {
-    strcpy(this->tx_buffer.msg, msg);
+    strncpy(this->tx_buffer.msg, msg, sizeof(this->tx_buffer.msg) - 1);
+    this->tx_buffer.msg[sizeof(this->tx_buffer.msg) - 1] = '\0';
     send_msg();
 }
 
 void serialManager::send_msg(const char *msg, const double val_f)
 {
-    sprintf(this->tx_buffer.msg, msg, val_f);
+    snprintf(this->tx_buffer.msg, sizeof(this->tx_buffer.msg), msg, val_f);
     send_msg();
 }
 
 void serialManager::send_msg(const char *msg, const int val_d)
 {
-    sprintf(this->tx_buffer.msg, msg, val_d);
+    snprintf(this->tx_buffer.msg, sizeof(this->tx_buffer.msg), msg, val_d);
     send_msg();
 }
 
 void serialManager::send_msg(const char *msg, const int32_t val_d)
 {
-    sprintf(this->tx_buffer.msg, msg, val_d);
+    snprintf(this->tx_buffer.msg, sizeof(this->tx_buffer.msg), msg, val_d);
     send_msg();
 }
 void serialManager::send_msg(const char *msg, const int64_t val_d)
 {
-    sprintf(this->tx_buffer.msg, msg, val_d);
+    snprintf(this->tx_buffer.msg, sizeof(this->tx_buffer.msg), msg, val_d);
     send_msg();
 }
 
 void serialManager::send_msg(const char *msg, const char val_s)
 {
-    sprintf(this->tx_buffer.msg, msg, val_s);
+    snprintf(this->tx_buffer.msg, sizeof(this->tx_buffer.msg), msg, val_s);
     send_msg();
 }

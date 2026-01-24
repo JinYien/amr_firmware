@@ -1,4 +1,5 @@
 #include "cybergearController.h"
+#include <Arduino.h>
 
 cybergearController::cybergearController(const uint8_t num_of_motors, const uint8_t master_id, uint8_t *motor_ids,
                                          FlexCAN_T4_Base *my_can) : num_of_motors(num_of_motors), master_id(master_id), motor_ids(motor_ids), my_can(my_can)
@@ -159,8 +160,15 @@ void cybergearController::on_receive(const CAN_message_t &msg)
 
 void cybergearController::wait_for_reply(const unsigned int num_of_replies)
 {
+    constexpr unsigned long kReplyTimeoutMs = 5;
+    const unsigned long start_time = millis();
     while (this->replies_received < num_of_replies)
     {
+        if (millis() - start_time >= kReplyTimeoutMs)
+        {
+            break;
+        }
+        yield();
     }
     this->replies_received = 0;
 }

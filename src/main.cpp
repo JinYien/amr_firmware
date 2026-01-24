@@ -60,7 +60,7 @@ void setup()
     myAdc.set_signal_offset(ANGLE_ADC_CH, 0);
     // 力センサー
     myAdc.set_signal_gradient(FORCE_X_ADC_CH, 3.9049);
-    myAdc.set_signal_offset(FORCE_X_ADC_CH, -8.4361);
+    myAdc.set_signal_offset(FORCE_X_ADC_CH, -10.6261);
     myAdc.set_signal_gradient(FORCE_Y_ADC_CH, 20.931);
     myAdc.set_signal_offset(FORCE_Y_ADC_CH, -52.365);
     myAdc.set_signal_gradient(FORCE_Z_ADC_CH, 19.6);
