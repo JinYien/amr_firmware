@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 // serial settings
-constexpr int NUM_OF_VARIABLES = 13; // データの個数
+constexpr int NUM_OF_VARIABLES = 12; // データの個数
 constexpr int CHUNK_SIZE = 10;       // データグループの個数
 constexpr int TX_BUFFER_SIZE = NUM_OF_VARIABLES * CHUNK_SIZE;
 constexpr int RX_BUFFER_SIZE = 11;
