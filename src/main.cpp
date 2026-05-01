@@ -49,7 +49,7 @@ void setup()
     myOutputs.setup();
 
     // Digital Input
-    pinMode(17, INPUT_PULLDOWN);
+    pinMode(STOP_BUTTON_PIN, INPUT_PULLDOWN);
 
     // SPI
     SPI.begin();
@@ -83,8 +83,8 @@ void periodic_loop()
     myEncoder.update();
     myAdc.update();
 
-    const double stop_button = static_cast<double>(!digitalRead(17));
-    if (stop_button > 0.5)
+    const bool stop_button = !digitalRead(STOP_BUTTON_PIN);
+    if (stop_button)
     {
         rightMotor.target_speed_deg_per_sec = 0.0;
         leftMotor.target_speed_deg_per_sec = 0.0;

@@ -53,7 +53,7 @@ void cybergearController::reset_motor(const uint8_t motor_no, const bool wait_re
 {
     const cybergearCommand new_cmd = this->motors[motor_no].reset_motor();
     send_command(&new_cmd);
-    if (wait_reply == true)
+    if (wait_reply)
     {
         wait_for_reply();
     }
@@ -62,7 +62,7 @@ void cybergearController::enable_motor(const uint8_t motor_no, const bool wait_r
 {
     const cybergearCommand new_cmd = this->motors[motor_no].enable_motor();
     send_command(&new_cmd);
-    if (wait_reply == true)
+    if (wait_reply)
     {
         wait_for_reply();
     }
@@ -72,7 +72,7 @@ void cybergearController::set_mech_position_to_zero(const uint8_t motor_no, cons
 {
     const cybergearCommand new_cmd = this->motors[motor_no].set_mech_position_to_zero();
     send_command(&new_cmd);
-    if (wait_reply == true)
+    if (wait_reply)
     {
         wait_for_reply();
     }
@@ -82,7 +82,7 @@ void cybergearController::set_run_mode(const uint8_t motor_no, CONTROL_MODES run
 {
     const cybergearCommand new_cmd = this->motors[motor_no].set_run_mode(run_mode);
     send_command(&new_cmd);
-    if (wait_reply == true)
+    if (wait_reply)
     {
         wait_for_reply();
     }
@@ -92,7 +92,7 @@ void cybergearController::change_motor_can_id(const uint8_t motor_no, uint8_t ne
 {
     const cybergearCommand new_cmd = this->motors[motor_no].change_motor_can_id(new_can_id);
     send_command(&new_cmd);
-    if (wait_reply == true)
+    if (wait_reply)
     {
         wait_for_reply();
     }
@@ -103,7 +103,7 @@ void cybergearController::read_control_params(const uint8_t motor_no, const CONT
 {
     const cybergearCommand new_cmd = this->motors[motor_no].read_control_params(param);
     send_command(&new_cmd);
-    if (wait_reply == true)
+    if (wait_reply)
     {
         wait_for_reply();
     }
@@ -114,7 +114,7 @@ void cybergearController::write_control_params(const uint8_t motor_no, const CON
 {
     const cybergearCommand new_cmd = this->motors[motor_no].write_control_params(param, value);
     send_command(&new_cmd);
-    if (wait_reply == true)
+    if (wait_reply)
     {
         wait_for_reply();
     }
@@ -189,18 +189,18 @@ void cybergearController::update_motor_params(const uint8_t motor_no, const char
     {
     case 0x11:
         this->reset_motor(motor_no);
-        sprintf(str, "Cybergear %d: reset motor", motor_no);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: reset motor", motor_no);
+        if (ser) ser->send_msg(str);
         break;
     case 0x12:
         this->enable_motor(motor_no);
-        sprintf(str, "Cybergear %d: enable motor", motor_no);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: enable motor", motor_no);
+        if (ser) ser->send_msg(str);
         break;
     case 0x13:
         this->set_mech_position_to_zero(motor_no);
-        sprintf(str, "Cybergear %d: set zero position", motor_no);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: set zero position", motor_no);
+        if (ser) ser->send_msg(str);
         break;
     case 0x14:
         if (val_t == 0)
@@ -233,58 +233,58 @@ void cybergearController::update_motor_params(const uint8_t motor_no, const char
         break;
     case 0x21:
         this->write_control_params(motor_no, CONTROL_PARAMS::IQ_REF, val_f);
-        sprintf(str, "Cybergear %d: iq ref = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: iq ref = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x22:
         this->write_control_params(motor_no, CONTROL_PARAMS::SPEED_REF, val_f);
-        sprintf(str, "Cybergear %d: speed ref = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: speed ref = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x23:
         this->write_control_params(motor_no, CONTROL_PARAMS::LOC_REF, val_f);
-        sprintf(str, "Cybergear %d: loc ref = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: loc ref = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x31:
-        this->write_control_params(motor_no, CONTROL_PARAMS::LIMIT_TORQUE, val_f);
-        sprintf(str, "Cybergear %d: limit torque = %f", motor_no, val_f);
+        snprintf(str, sizeof(str), "Cybergear %d: limit torque = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         ser->send_msg(str);
         break;
     case 0x32:
         this->write_control_params(motor_no, CONTROL_PARAMS::LIMIT_CURRENT, val_f);
-        sprintf(str, "Cybergear %d: limit current = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: limit current = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x33:
         this->write_control_params(motor_no, CONTROL_PARAMS::LIMIT_SPEED, val_f);
-        sprintf(str, "Cybergear %d: limit speed = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: limit speed = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x41:
         this->write_control_params(motor_no, CONTROL_PARAMS::CURRENT_KP, val_f);
-        sprintf(str, "Cybergear %d: cur kp = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: cur kp = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x42:
         this->write_control_params(motor_no, CONTROL_PARAMS::CURRENT_KI, val_f);
-        sprintf(str, "Cybergear %d: cur ki = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: cur ki = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x43:
         this->write_control_params(motor_no, CONTROL_PARAMS::SPD_KP, val_f);
-        sprintf(str, "Cybergear %d: speed kp = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: speed kp = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x44:
         this->write_control_params(motor_no, CONTROL_PARAMS::SPD_KI, val_f);
-        sprintf(str, "Cybergear %d: speed ki = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: speed ki = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     case 0x45:
         this->write_control_params(motor_no, CONTROL_PARAMS::LOC_KP, val_f);
-        sprintf(str, "Cybergear %d: loc kp = %f", motor_no, val_f);
-        ser->send_msg(str);
+        snprintf(str, sizeof(str), "Cybergear %d: loc kp = %f", motor_no, val_f);
+        if (ser) ser->send_msg(str);
         break;
     default:
         break;

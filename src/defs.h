@@ -11,9 +11,9 @@ constexpr int RX_BUFFER_SIZE = 11;
 
 // control settings
 constexpr int SAMPLING_RATE_HZ = 1000;
-constexpr double SAMPLING_PERIOD_SEC = 1.0F / static_cast<double>(SAMPLING_RATE_HZ);
-constexpr int SAMPLING_PERIOD_USEC = 1E6 / SAMPLING_RATE_HZ;
-constexpr double SPEED_FILTER_CUTOFF_FREQUENCY = 30;        // Hz
+constexpr double SAMPLING_PERIOD_SEC = 1.0 / static_cast<double>(SAMPLING_RATE_HZ);
+constexpr int SAMPLING_PERIOD_USEC = 1'000'000 / SAMPLING_RATE_HZ;
+constexpr double SPEED_FILTER_CUTOFF_FREQUENCY = 30; // Hz
 constexpr double ACCELERATION_FILTER_CUTOFF_FREQUENCY = 30; // Hz
 
 // adc, dac, spi settings
@@ -60,6 +60,9 @@ constexpr double DUTY_CURRENT_COEF = (MAX_DUTY - MIN_DUTY) / (MAX_CURRENT - MIN_
 constexpr uint8_t NUM_MOTORS = 1;
 constexpr uint8_t MASTER_CAN_ID = 0x00;
 constexpr uint8_t MOTOR_CAN_ID = 0x7F;
+
+// digital input pins
+constexpr uint8_t STOP_BUTTON_PIN = 17;
 
 // adc usage
 constexpr uint8_t UNUSED_ADC_CH0 = 0;

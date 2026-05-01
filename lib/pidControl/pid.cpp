@@ -33,7 +33,7 @@ double PID::compute_output(const double ref, const double feedback) {
 
     this->previous_error = error;
 
-    double preSatOutput = pTerm + iTerm + dTerm;
+    const double preSatOutput = pTerm + iTerm + dTerm;
     const double output = min(max(preSatOutput, this->Umin), this->Umax);
     this->satRecord = (output == preSatOutput) ? 1 : 0;
 

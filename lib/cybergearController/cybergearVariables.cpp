@@ -208,7 +208,7 @@ void cybergearVariables::process_ram_read(const uint8_t *data, uint8_t len)
 
 void cybergearVariables::process_motor_fault(const uint8_t *data, const uint8_t len)
 {
-    memcpy(&(this->fault_data), &data, sizeof(uint8_t) * len);
+    memcpy(this->fault_data, data, sizeof(uint8_t) * len);
     // TODO
 }
 

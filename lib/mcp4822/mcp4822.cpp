@@ -19,13 +19,13 @@ void MCP4822::setup() const {
         // set channel A to 0
         const uint16_t commandA = createCommand(DACChannel::Channel_A, DACGain::High, 0);
         digitalWrite(pin, LOW); // select device
-        SPI.transfer16(commandA); // sent command for the A channel
+        SPI.transfer16(commandA); // send command for the A channel
         digitalWrite(pin, HIGH); // deselect device
 
         // set channel B to 0
         const uint16_t commandB = createCommand(DACChannel::Channel_B, DACGain::High, 0);
         digitalWrite(pin, LOW); // select device
-        SPI.transfer16(commandB); // sent command for the A channel
+        SPI.transfer16(commandB); // send command for the B channel
         digitalWrite(pin, HIGH); // deselect device
     }
 }
