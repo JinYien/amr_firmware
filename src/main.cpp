@@ -83,8 +83,8 @@ void periodic_loop()
     myEncoder.update();
     myAdc.update();
 
-    const bool stop_button = !digitalRead(STOP_BUTTON_PIN);
-    if (stop_button)
+    const double stop_button = static_cast<double>(!digitalRead(STOP_BUTTON_PIN));
+    if (stop_button > 0.5)
     {
         rightMotor.target_speed_deg_per_sec = 0.0;
         leftMotor.target_speed_deg_per_sec = 0.0;
