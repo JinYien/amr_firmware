@@ -55,9 +55,6 @@ void setup()
     SPI.begin();
     myAdc.setup();
 
-    // 角度センサー
-    myAdc.set_signal_gradient(ANGLE_ADC_CH, 4.4326);
-    myAdc.set_signal_offset(ANGLE_ADC_CH, 0);
     // 力センサー
     myAdc.set_signal_gradient(FORCE_X_ADC_CH, 3.9049);
     myAdc.set_signal_offset(FORCE_X_ADC_CH, -10.6261);
@@ -92,7 +89,6 @@ void periodic_loop()
         rightMotor.target_speed_deg_per_sec = 0.0;
         leftMotor.target_speed_deg_per_sec = 0.0;
         myCybergearController.reset_motor(0, false);
-        myCybergearController.set_mech_position_to_zero(0, false);
     }
 
     rightMotor.update(myEncoder.get_right_angle());
@@ -101,7 +97,6 @@ void periodic_loop()
 
     const double cybergear_position = myCybergearController.motors[0].position;
     const double cybergear_velocity = myCybergearController.motors[0].velocity;
-    const double elevation_angle = myAdc.signal_values[ANGLE_ADC_CH];
     const double force_x = myAdc.signal_values[FORCE_X_ADC_CH];
     const double force_y = myAdc.signal_values[FORCE_Y_ADC_CH];
     const double force_z = myAdc.signal_values[FORCE_Z_ADC_CH];
@@ -116,7 +111,6 @@ void periodic_loop()
         myOutputs.left_torque,
         cybergear_velocity,
         cybergear_position,
-        elevation_angle,
         force_x,
         force_y,
         force_z,

@@ -62,14 +62,14 @@ constexpr uint8_t MASTER_CAN_ID = 0x00;
 constexpr uint8_t MOTOR_CAN_ID = 0x7F;
 
 // adc usage
-constexpr uint8_t ANGLE_ADC_CH = 0;   // 角度センサー
+constexpr uint8_t UNUSED_ADC_CH0 = 0;
 constexpr uint8_t FORCE_X_ADC_CH = 1; // 力センサー（X軸）
 constexpr uint8_t FORCE_Y_ADC_CH = 2; // 力センサー（Y軸）
 constexpr uint8_t FORCE_Z_ADC_CH = 3; // 力センサー（Z軸）
-constexpr uint8_t UNUSED_ADC_CH1 = 4;
-constexpr uint8_t UNUSED_ADC_CH2 = 5;
-constexpr uint8_t UNUSED_ADC_CH3 = 6;
-constexpr uint8_t UNUSED_ADC_CH4 = 7;
+constexpr uint8_t UNUSED_ADC_CH4 = 4;
+constexpr uint8_t UNUSED_ADC_CH5 = 5;
+constexpr uint8_t UNUSED_ADC_CH6 = 6;
+constexpr uint8_t UNUSED_ADC_CH7 = 7;
 
 enum class Side
 {
