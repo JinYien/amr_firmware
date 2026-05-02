@@ -20,9 +20,10 @@ void adcManager::add_channel(const Channel channel) { this->channels[this->num_o
 void adcManager::setup()
 {
     this->adc.setup();
-    add_channel(Channel::SINGLE_3); // 力センサー（X軸）
-    add_channel(Channel::SINGLE_4); // 力センサー（Y軸）
-    add_channel(Channel::SINGLE_5); // 力センサー（Z軸）
+    add_channel(Channel::SINGLE_2);
+    add_channel(Channel::SINGLE_3);
+    add_channel(Channel::SINGLE_4);
+    add_channel(Channel::SINGLE_5);
 }
 
 void adcManager::update()
