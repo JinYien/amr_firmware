@@ -254,10 +254,10 @@ void cybergearController::update_motor_params(const uint8_t motor_no, const char
             ser->send_msg(str);
         break;
     case 0x31:
+        this->write_control_params(motor_no, CONTROL_PARAMS::LIMIT_TORQUE, val_f);
         snprintf(str, sizeof(str), "Cybergear %d: limit torque = %f", motor_no, val_f);
         if (ser)
             ser->send_msg(str);
-        ser->send_msg(str);
         break;
     case 0x32:
         this->write_control_params(motor_no, CONTROL_PARAMS::LIMIT_CURRENT, val_f);

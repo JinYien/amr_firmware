@@ -46,7 +46,6 @@ void PID::clear_pid_storage()
 {
     this->iStorage = 0;
     this->dStorage1 = 0;
-    this->dStorage2 = 0;
-    this->satRecord = 0;
+    this->satRecord = 1;
     this->previous_error = 0;
 }

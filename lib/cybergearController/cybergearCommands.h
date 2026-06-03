@@ -54,7 +54,7 @@ struct conversionRange
 
 namespace CONVERSION_RANGES
 {
-    constexpr conversionRange POSITION{-4 * PI, 4 * PI};
+    constexpr conversionRange POSITION{-2 * PI, 2 * PI};
     constexpr conversionRange VELOCITY{-30, 30};
     constexpr conversionRange TORQUE{-12, 12};
 
