@@ -20,10 +20,10 @@ void adcManager::add_channel(const Channel channel) { this->channels[this->num_o
 void adcManager::setup()
 {
     this->adc.setup();
-    add_channel(Channel::SINGLE_2); // 角度センサー
-    add_channel(Channel::SINGLE_3); // 力センサー（X軸）
-    add_channel(Channel::SINGLE_4); // 力センサー（Y軸）
-    add_channel(Channel::SINGLE_5); // 力センサー（Z軸）
+    add_channel(Channel::SINGLE_2);
+    add_channel(Channel::SINGLE_3);
+    add_channel(Channel::SINGLE_4);
+    add_channel(Channel::SINGLE_5);
 }
 
 void adcManager::update()
@@ -68,52 +68,40 @@ void adcManager::change_params(char const id, int64_t const val_i, const double 
     switch (id)
     {
     case 0x11:
-        set_signal_type(ANGLE_ADC_CH, static_cast<SignalType>(val_i));
-        ser->send_msg("Signal type of angle sensor set to %d.", val_i);
-        break;
-    case 0x12:
         set_signal_type(FORCE_X_ADC_CH, static_cast<SignalType>(val_i));
         ser->send_msg("Signal type of force sensor x-axis set to %d.", val_i);
         break;
-    case 0x13:
+    case 0x12:
         set_signal_type(FORCE_Y_ADC_CH, static_cast<SignalType>(val_i));
         ser->send_msg("Signal type of force sensor y-axis set to %d.", val_i);
         break;
-    case 0x14:
+    case 0x13:
         set_signal_type(FORCE_Z_ADC_CH, static_cast<SignalType>(val_i));
         ser->send_msg("Signal type of force sensor z-axis set to %d.", val_i);
         break;
     // Signal Gradient
     case 0x21:
-        set_signal_gradient(ANGLE_ADC_CH, val_f);
-        ser->send_msg("Signal gradient of angle sensor set to %f.", val_f);
-        break;
-    case 0x22:
         set_signal_gradient(FORCE_X_ADC_CH, val_f);
         ser->send_msg("Signal gradient of force sensor x-axis set to %f.", val_f);
         break;
-    case 0x23:
+    case 0x22:
         set_signal_gradient(FORCE_Y_ADC_CH, val_f);
         ser->send_msg("Signal gradient of force sensor y-axis set to %f.", val_f);
         break;
-    case 0x24:
+    case 0x23:
         set_signal_gradient(FORCE_Z_ADC_CH, val_f);
         ser->send_msg("Signal gradient of force sensor z-axis set to %f.", val_f);
         break;
     // Signal Offset
     case 0x31:
-        set_signal_offset(ANGLE_ADC_CH, val_f);
-        ser->send_msg("Signal offset of angle sensor set to %f.", val_f);
-        break;
-    case 0x32:
         set_signal_offset(FORCE_X_ADC_CH, val_f);
         ser->send_msg("Signal offset of force sensor x-axis set to %f.", val_f);
         break;
-    case 0x33:
+    case 0x32:
         set_signal_offset(FORCE_Y_ADC_CH, val_f);
         ser->send_msg("Signal offset of force sensor y-axis set to %f.", val_f);
         break;
-    case 0x34:
+    case 0x33:
         set_signal_offset(FORCE_Z_ADC_CH, val_f);
         ser->send_msg("Signal offset of force sensor z-axis set to %f.", val_f);
         break;

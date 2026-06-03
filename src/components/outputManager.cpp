@@ -1,5 +1,6 @@
 #include "outputManager.h"
 #include "defs.h"
+#include <cmath>
 
 outputManager::outputManager(const uint8_t right_duty_pin, const uint8_t right_direction_pin,
                              const uint8_t left_duty_pin, const uint8_t left_direction_pin) : right_duty_pin(right_duty_pin), right_direction_pin(right_direction_pin), left_duty_pin(left_duty_pin),
@@ -78,7 +79,7 @@ void outputManager::set_current(const double right_current, const double left_cu
             left_dir = Direction::CLOCKWISE;
         }
     }
-    set_duty(current_to_duty(abs(right_current)), current_to_duty(abs(left_current)));
+    set_duty(current_to_duty(std::abs(right_current)), current_to_duty(std::abs(left_current)));
     set_direction(right_dir, left_dir);
 }
 

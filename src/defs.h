@@ -4,15 +4,15 @@
 #include <Arduino.h>
 
 // serial settings
-constexpr int NUM_OF_VARIABLES = 13; // データの個数
+constexpr int NUM_OF_VARIABLES = 12; // データの個数
 constexpr int CHUNK_SIZE = 10;       // データグループの個数
 constexpr int TX_BUFFER_SIZE = NUM_OF_VARIABLES * CHUNK_SIZE;
 constexpr int RX_BUFFER_SIZE = 11;
 
 // control settings
 constexpr int SAMPLING_RATE_HZ = 1000;
-constexpr double SAMPLING_PERIOD_SEC = 1.0F / static_cast<double>(SAMPLING_RATE_HZ);
-constexpr int SAMPLING_PERIOD_USEC = 1E6 / SAMPLING_RATE_HZ;
+constexpr double SAMPLING_PERIOD_SEC = 1.0 / static_cast<double>(SAMPLING_RATE_HZ);
+constexpr int SAMPLING_PERIOD_USEC = 1'000'000 / SAMPLING_RATE_HZ;
 constexpr double SPEED_FILTER_CUTOFF_FREQUENCY = 30;        // Hz
 constexpr double ACCELERATION_FILTER_CUTOFF_FREQUENCY = 30; // Hz
 
@@ -61,15 +61,18 @@ constexpr uint8_t NUM_MOTORS = 1;
 constexpr uint8_t MASTER_CAN_ID = 0x00;
 constexpr uint8_t MOTOR_CAN_ID = 0x7F;
 
+// digital input pins
+constexpr uint8_t STOP_BUTTON_PIN = 17;
+
 // adc usage
-constexpr uint8_t ANGLE_ADC_CH = 0;   // 角度センサー
+constexpr uint8_t UNUSED_ADC_CH0 = 0;
 constexpr uint8_t FORCE_X_ADC_CH = 1; // 力センサー（X軸）
 constexpr uint8_t FORCE_Y_ADC_CH = 2; // 力センサー（Y軸）
 constexpr uint8_t FORCE_Z_ADC_CH = 3; // 力センサー（Z軸）
-constexpr uint8_t UNUSED_ADC_CH1 = 4;
-constexpr uint8_t UNUSED_ADC_CH2 = 5;
-constexpr uint8_t UNUSED_ADC_CH3 = 6;
-constexpr uint8_t UNUSED_ADC_CH4 = 7;
+constexpr uint8_t UNUSED_ADC_CH4 = 4;
+constexpr uint8_t UNUSED_ADC_CH5 = 5;
+constexpr uint8_t UNUSED_ADC_CH6 = 6;
+constexpr uint8_t UNUSED_ADC_CH7 = 7;
 
 enum class Side
 {

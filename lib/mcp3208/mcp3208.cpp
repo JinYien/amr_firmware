@@ -2,12 +2,14 @@
 
 MCP3208::MCP3208(const uint16_t vref, const uint8_t csPin) : mVref(vref), mCsPin(csPin) {}
 
-void MCP3208::setup() const {
+void MCP3208::setup() const
+{
     pinMode(mCsPin, OUTPUT);
     digitalWriteFast(mCsPin, HIGH);
 }
 
-SpiData MCP3208::createCommand(const Channel ch) {
+SpiData MCP3208::createCommand(const Channel ch)
+{
     // base command structure
     // 0b000001cccc000000
     // c: channel config
@@ -15,7 +17,8 @@ SpiData MCP3208::createCommand(const Channel ch) {
                    .value = static_cast<uint16_t>((0x0400 | (ch << 6)))};
 }
 
-uint16_t MCP3208::read(const Channel ch) {
+uint16_t MCP3208::read(const Channel ch)
+{
     SpiData adc = {.value = 0};
     const SpiData cmd = createCommand(ch);
 

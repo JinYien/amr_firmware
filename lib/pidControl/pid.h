@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-
-class PID {
+class PID
+{
 public:
     explicit PID(double sampling_period = 1E-3, double d_filter_cutoff_freq = 30);
     double Kp = 0;

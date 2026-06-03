@@ -1,20 +1,21 @@
 #pragma once
 
-// Based on https://thecodehound.com/butterworth-filter-design-in-c/
-// Taken from here : https://www.dsprelated.com/showarticle/1119.php
+// https://thecodehound.com/butterworth-filter-design-in-c/
+// https://www.dsprelated.com/showarticle/1119.php
+
 #include <array>
 #include <vector>
 
-
-enum class FilterType {
+enum class FilterType
+{
     LOWPASS = 0,
     HIGHPASS = 1,
     BANDPASS = 2,
 };
 
-
-template<unsigned int N>
-class butterworthFilter {
+template <unsigned int N>
+class butterworthFilter
+{
 public:
     explicit butterworthFilter(FilterType filter_type = FilterType::LOWPASS, double fs = 1000, double fc1 = 30,
                                double fc2 = 0);

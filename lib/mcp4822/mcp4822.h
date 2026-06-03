@@ -7,10 +7,19 @@
 
 #include <Arduino.h>
 
-enum DACChannel : uint8_t { Channel_A = 0u, Channel_B = 1u };
-enum DACGain : uint8_t { High = 0u, Low = 1u };
+enum DACChannel : uint8_t
+{
+    Channel_A = 0u,
+    Channel_B = 1u
+};
+enum DACGain : uint8_t
+{
+    High = 0u,
+    Low = 1u
+};
 
-class MCP4822 {
+class MCP4822
+{
 public:
     /** ADC resolution in bits. */
     const uint8_t kResBits = 12;

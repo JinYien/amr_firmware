@@ -27,7 +27,7 @@ void encoderManager::set_initial_angle(const Side side, const double angle)
     const int32_t init_counts = degrees_to_encoder_counts(angle);
     if (side == Side::RIGHT)
     {
-        this->qepRight.setInitConfig(); //
+        this->qepRight.setInitConfig();
         this->qepRight.EncConfig.positionInitialValue = init_counts;
         this->qepRight.EncConfig.enableReverseDirection = this->my_right_flexion_is_clockwise;
         this->qepRight.init();
@@ -51,6 +51,14 @@ void encoderManager::update()
 
 double encoderManager::get_right_angle() const { return this->right_angle; }
 double encoderManager::get_left_angle() const { return this->left_angle; }
+
+double encoderManager::get_initial_angle(const Side side)
+{
+    const int32_t counts = (side == Side::RIGHT)
+        ? this->qepRight.EncConfig.positionInitialValue
+        : this->qepLeft.EncConfig.positionInitialValue;
+    return encoder_counts_to_degrees(counts);
+}
 
 double encoderManager::encoder_counts_to_degrees(const int32_t encoder_counts)
 {

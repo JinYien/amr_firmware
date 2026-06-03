@@ -8,21 +8,25 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-typedef union spiData {
+typedef union spiData
+{
     uint16_t value; /**< value */
-    struct {
+    struct
+    {
         uint8_t loByte; /**< low byte */
         uint8_t hiByte; /**< high byte */
     };
 } SpiData;
 
 constexpr size_t dmaSize = 2;
-typedef struct dmaData {
+typedef struct dmaData
+{
     volatile uint8_t src[dmaSize];
     volatile uint8_t dest[dmaSize];
 } DmaData;
 
-enum Channel {
+enum Channel
+{
     SINGLE_0 = 0b1000, /**< single channel 0 */
     SINGLE_1 = 0b1001, /**< single channel 1 */
     SINGLE_2 = 0b1010, /**< single channel 2 */
@@ -38,10 +42,11 @@ enum Channel {
     DIFF_2PN = 0b0100, /**< differential channel 2 (input 4+,5-) */
     DIFF_2NP = 0b0101, /**< differential channel 2 (input 5-,5+) */
     DIFF_3PN = 0b0110, /**< differential channel 3 (input 6+,7-) */
-    DIFF_3NP = 0b0111 /**< differential channel 3 (input 6-,7+) */
+    DIFF_3NP = 0b0111  /**< differential channel 3 (input 6-,7+) */
 };
 
-class MCP3208 {
+class MCP3208
+{
 public:
     /** ADC resolution in bits. */
     const uint8_t kResBits = 12;
