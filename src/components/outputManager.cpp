@@ -3,17 +3,25 @@
 #include <cmath>
 
 outputManager::outputManager(const uint8_t right_duty_pin, const uint8_t right_direction_pin,
-                             const uint8_t left_duty_pin, const uint8_t left_direction_pin) : right_duty_pin(right_duty_pin), right_direction_pin(right_direction_pin), left_duty_pin(left_duty_pin),
-                                                                                              left_direction_pin(left_direction_pin) {}
+                             const uint8_t left_duty_pin, const uint8_t left_direction_pin)
+    : right_duty_pin(right_duty_pin),
+      right_direction_pin(right_direction_pin),
+      left_duty_pin(left_duty_pin),
+      left_direction_pin(left_direction_pin) {}
 
 void outputManager::setup() const
 {
     pinMode(this->right_direction_pin, OUTPUT);
     pinMode(this->left_direction_pin, OUTPUT);
 
-    analogWriteResolution(12);
+    analogWriteResolution(PWM_RESOLUTION);
     analogWrite(this->right_duty_pin, 0);
     analogWrite(this->left_duty_pin, 0);
+}
+
+static Direction direction_for(const bool forward_is_clockwise, const double current)
+{
+    return (forward_is_clockwise == (current < 0)) ? Direction::CLOCKWISE : Direction::ANTICLOCKWISE;
 }
 
 void outputManager::set_duty(const int right_duty, const int left_duty)
@@ -32,53 +40,8 @@ void outputManager::set_direction(const Direction right_dir, const Direction lef
 
 void outputManager::set_current(const double right_current, const double left_current)
 {
-    Direction right_dir = Direction::CLOCKWISE;
-    Direction left_dir = Direction::CLOCKWISE;
-    if (MOTOR_RIGHT_FORWARD_CLOCKWISE)
-    {
-        if (right_current < 0)
-        {
-            right_dir = Direction::CLOCKWISE;
-        }
-        else
-        {
-            right_dir = Direction::ANTICLOCKWISE;
-        }
-    }
-    else
-    {
-        if (right_current < 0)
-        {
-            right_dir = Direction::ANTICLOCKWISE;
-        }
-        else
-        {
-            right_dir = Direction::CLOCKWISE;
-        }
-    }
-
-    if (MOTOR_LEFT_FORWARD_CLOCKWISE)
-    {
-        if (left_current < 0)
-        {
-            left_dir = Direction::CLOCKWISE;
-        }
-        else
-        {
-            left_dir = Direction::ANTICLOCKWISE;
-        }
-    }
-    else
-    {
-        if (left_current < 0)
-        {
-            left_dir = Direction::ANTICLOCKWISE;
-        }
-        else
-        {
-            left_dir = Direction::CLOCKWISE;
-        }
-    }
+    const Direction right_dir = direction_for(MOTOR_RIGHT_FORWARD_CLOCKWISE, right_current);
+    const Direction left_dir = direction_for(MOTOR_LEFT_FORWARD_CLOCKWISE, left_current);
     set_duty(current_to_duty(std::abs(right_current)), current_to_duty(std::abs(left_current)));
     set_direction(right_dir, left_dir);
 }

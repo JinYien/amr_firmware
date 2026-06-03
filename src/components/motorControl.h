@@ -34,18 +34,18 @@ public:
     double target_torque_Nm = 0;
     double max_torque_Nm = 30;
 
-    // speed control
+    // 速度制御
     PID speed_pid;
 
-    // position control
+    // 位置制御
     PID position_pid;
 
-    // impedance control
+    // インピーダンス制御
     double stiffness = 1;
     double damping = 0;
     double inertia = 0;
 
-    // timed pulse control
+    // パルス幅制御
     double timed_pulse_start_time = 0;
     double timed_pulse_end_time = 0;
 
@@ -58,11 +58,12 @@ private:
     double torque_command_Nm = 0;
 
     void calculate_speed();
-    double temp_angle_deg = 0;
+    double previous_angle_deg = 0;
+    // 1次離散ローパスフィルター：filtered = a1*prev + b0*new、カットオフ周波数に調整する
     const double speed_filter_a1 = 1 / (1 + SAMPLING_PERIOD_SEC * 2 * PI * SPEED_FILTER_CUTOFF_FREQUENCY),
                  speed_filter_b0 = 1 - 1 / (1 + SAMPLING_PERIOD_SEC * 2 * PI * SPEED_FILTER_CUTOFF_FREQUENCY);
 
-    double temp_speed_deg_per_sec = 0;
+    double previous_speed_deg_per_sec = 0;
     const double acceleration_filter_a1 = 1 / (1 + SAMPLING_PERIOD_SEC * 2 * PI * ACCELERATION_FILTER_CUTOFF_FREQUENCY),
                  acceleration_filter_b0 =
                      1 - 1 / (1 + SAMPLING_PERIOD_SEC * 2 * PI * ACCELERATION_FILTER_CUTOFF_FREQUENCY);

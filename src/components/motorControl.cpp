@@ -1,7 +1,9 @@
 #include "motorControl.h"
 
-motorControl::motorControl(Side side) : speed_pid(SAMPLING_PERIOD_SEC, SPEED_FILTER_CUTOFF_FREQUENCY), position_pid(SAMPLING_PERIOD_SEC, ACCELERATION_FILTER_CUTOFF_FREQUENCY),
-                                        side(side)
+motorControl::motorControl(Side side)
+    : speed_pid(SAMPLING_PERIOD_SEC, SPEED_FILTER_CUTOFF_FREQUENCY),
+      position_pid(SAMPLING_PERIOD_SEC, ACCELERATION_FILTER_CUTOFF_FREQUENCY),
+      side(side)
 {
     this->speed_pid.Umax = 10;
     this->speed_pid.Umin = -10;
@@ -23,28 +25,32 @@ void motorControl::update(const double angle_deg)
     calculate_speed();
     calculate_acceleration();
 
-    if (this->control_mode == CONTROL_MODE::TORQUE_CONTROL)
+    switch (this->control_mode)
     {
+    case CONTROL_MODE::TORQUE_CONTROL:
         this->torque_command_Nm = this->target_torque_Nm;
-    }
-    else if (this->control_mode == CONTROL_MODE::SPEED_CONTROL)
-    {
+        break;
+    case CONTROL_MODE::SPEED_CONTROL:
         this->torque_command_Nm =
             this->speed_pid.compute_output(this->target_speed_deg_per_sec, this->speed_deg_per_sec);
-    }
-    else if (this->control_mode == CONTROL_MODE::POSITION_CONTROL)
+        break;
+    case CONTROL_MODE::POSITION_CONTROL:
     {
+        // カスケードループ：外側の位置PIDが、内側の速度PIDに対して速度目標値を生成する
         const double target_speed = this->position_pid.compute_output(this->target_angle_deg, this->angle_deg);
         this->torque_command_Nm = this->speed_pid.compute_output(target_speed, this->speed_deg_per_sec);
+        break;
     }
-    else if (this->control_mode == CONTROL_MODE::IMPEDANCE_CONTROL)
+    case CONTROL_MODE::IMPEDANCE_CONTROL:
     {
         const double pos_error = this->target_angle_deg - this->angle_deg;
         this->torque_command_Nm = this->stiffness * pos_error + this->damping * this->speed_deg_per_sec +
                                   this->inertia * this->acceleration_deg_per_sec2;
+        break;
     }
-    else if (this->control_mode == CONTROL_MODE::TIMED_PULSE_CONTROL)
+    case CONTROL_MODE::TIMED_PULSE_CONTROL:
     {
+        // start_timer()の実行後、[start, end]の範囲内でのみ目標トルクを適用する
         if (double const timer_time = static_cast<double>(micros() - this->timer_start_usec) / 1E6;
             timer_time > this->timed_pulse_start_time and timer_time < this->timed_pulse_end_time)
         {
@@ -54,13 +60,14 @@ void motorControl::update(const double angle_deg)
         {
             this->torque_command_Nm = 0;
         }
+        break;
     }
-    else
-    {
+    default:
         this->torque_command_Nm = 0;
+        break;
     }
 
-    // saturate torque
+    // トルクを限界まで引き出す
     if (this->torque_command_Nm > this->max_torque_Nm)
     {
         this->torque_command_Nm = this->max_torque_Nm;
@@ -73,16 +80,16 @@ void motorControl::update(const double angle_deg)
 
 void motorControl::calculate_speed()
 {
-    const double new_speed = (this->angle_deg - this->temp_angle_deg) / SAMPLING_PERIOD_SEC;
+    const double new_speed = (this->angle_deg - this->previous_angle_deg) / SAMPLING_PERIOD_SEC;
     this->speed_deg_per_sec = this->speed_filter_a1 * this->speed_deg_per_sec + this->speed_filter_b0 * new_speed;
-    this->temp_angle_deg = this->angle_deg;
+    this->previous_angle_deg = this->angle_deg;
 }
 
 void motorControl::calculate_acceleration()
 {
-    const double new_acceleration = (this->speed_deg_per_sec - this->temp_speed_deg_per_sec) / SAMPLING_PERIOD_SEC;
+    const double new_acceleration = (this->speed_deg_per_sec - this->previous_speed_deg_per_sec) / SAMPLING_PERIOD_SEC;
     this->acceleration_deg_per_sec2 = this->acceleration_filter_a1 * this->acceleration_deg_per_sec2 + this->acceleration_filter_b0 * new_acceleration;
-    this->temp_speed_deg_per_sec = this->speed_deg_per_sec;
+    this->previous_speed_deg_per_sec = this->speed_deg_per_sec;
 }
 
 void motorControl::start_timer() { this->timer_start_usec = micros(); }

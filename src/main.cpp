@@ -78,6 +78,7 @@ void loop()
         previous_cybergear_millis = now;
     }
 }
+
 void periodic_loop()
 {
     myEncoder.update();

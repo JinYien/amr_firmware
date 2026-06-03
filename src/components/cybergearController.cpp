@@ -1,7 +1,8 @@
 #include "cybergearController.h"
 
 cybergearController::cybergearController(const uint8_t num_of_motors, const uint8_t master_id, uint8_t *motor_ids,
-                                         FlexCAN_T4_Base *my_can) : num_of_motors(num_of_motors), master_id(master_id), motor_ids(motor_ids), my_can(my_can)
+                                        FlexCAN_T4_Base *my_can)
+    : num_of_motors(num_of_motors), master_id(master_id), motor_ids(motor_ids), my_can(my_can)
 {
     this->motors = new cybergearVariables[num_of_motors];
     for (uint8_t i = 0; i < this->num_of_motors; i++)
@@ -139,9 +140,8 @@ void cybergearController::on_receive(const CAN_message_t &msg)
 
     if (receive_can_id != this->master_id)
     {
-        // invalid master
         this->replies_received += 1;
-        return; // not for me
+        return;
     }
 
     for (uint8_t motor_no = 0; motor_no < this->num_of_motors; motor_no++)
@@ -166,6 +166,7 @@ void cybergearController::wait_for_reply(const unsigned int num_of_replies)
 }
 void cybergearController::send_command(const cybergearCommand *cmd) const
 {
+    // CyberGearは29ビットの拡張CAN IDをする：[cmd_id:8][option:16][can_id:8]
     const long id = cmd->cmd_id << 24 | cmd->option << 8 | cmd->can_id;
 
     CAN_message_t msg;
@@ -209,7 +210,7 @@ void cybergearController::update_motor_params(const uint8_t motor_no, const char
         if (val_t == 0)
         {
             this->set_run_mode(motor_no, CONTROL_MODES::CURRENT);
-            sprintf(str, "Cybergear %d: current control", motor_no);
+            snprintf(str, sizeof(str), "Cybergear %d: current control", motor_no);
             if (ser)
             {
                 ser->send_msg(str);
@@ -218,7 +219,7 @@ void cybergearController::update_motor_params(const uint8_t motor_no, const char
         else if (val_t == 1)
         {
             this->set_run_mode(motor_no, CONTROL_MODES::SPEED);
-            sprintf(str, "Cybergear %d: speed control", motor_no);
+            snprintf(str, sizeof(str), "Cybergear %d: speed control", motor_no);
             if (ser)
             {
                 ser->send_msg(str);
@@ -227,7 +228,7 @@ void cybergearController::update_motor_params(const uint8_t motor_no, const char
         else if (val_t == 2)
         {
             this->set_run_mode(motor_no, CONTROL_MODES::POSITION);
-            sprintf(str, "Cybergear %d: position control", motor_no);
+            snprintf(str, sizeof(str), "Cybergear %d: position control", motor_no);
             if (ser)
             {
                 ser->send_msg(str);

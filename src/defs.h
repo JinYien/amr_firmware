@@ -3,29 +3,29 @@
 
 #include <Arduino.h>
 
-// serial settings
+// serial 設定
 constexpr int NUM_OF_VARIABLES = 12; // データの個数
 constexpr int CHUNK_SIZE = 10;       // データグループの個数
 constexpr int TX_BUFFER_SIZE = NUM_OF_VARIABLES * CHUNK_SIZE;
 constexpr int RX_BUFFER_SIZE = 11;
 
-// control settings
+// control 設定
 constexpr int SAMPLING_RATE_HZ = 1000;
 constexpr double SAMPLING_PERIOD_SEC = 1.0 / static_cast<double>(SAMPLING_RATE_HZ);
 constexpr int SAMPLING_PERIOD_USEC = 1'000'000 / SAMPLING_RATE_HZ;
 constexpr double SPEED_FILTER_CUTOFF_FREQUENCY = 30;        // Hz
 constexpr double ACCELERATION_FILTER_CUTOFF_FREQUENCY = 30; // Hz
 
-// adc, dac, spi settings
+// dac, spi 設定
 constexpr uint16_t VREF = 4096;           // 4.096V
 constexpr uint32_t SPI_CLOCK = 1'200'000; // 1.2MHz
 
-// adc settings
+// adc 設定
 constexpr uint8_t ADC_CS_PIN = 14;
 constexpr double ADC_12BIT_TO_VOLTAGE_GRADIENT = 0.004980915502865024;
 constexpr double ADC_12BIT_TO_VOLTAGE_OFFSET = -10.249937733752171;
 
-// qep settings
+// qep 設定
 constexpr uint8_t MOTOR_RIGHT_QEP = 1;
 constexpr uint8_t MOTOR_LEFT_QEP = 2;
 constexpr uint8_t MOTOR_RIGHT_QEP_A_PIN = 1;
@@ -40,7 +40,7 @@ constexpr double COUNTS_PER_MOTOR_DEG = static_cast<double>(COUNTS_PER_MOTOR_TUR
 constexpr double GEAR_RATIO = 36.0 / 1.0;
 constexpr double COUNTS_PER_GEAR_DEG = COUNTS_PER_MOTOR_DEG * GEAR_RATIO;
 
-// pwm pins
+// pwm ピン
 constexpr uint8_t MOTOR_RIGHT_DUTY_PIN = 5;
 constexpr uint8_t MOTOR_RIGHT_DIRECTION_PIN = 7;
 constexpr uint8_t MOTOR_LEFT_DUTY_PIN = 6;
@@ -52,19 +52,21 @@ constexpr double TORQUE_CONSTANT_mNM_PER_A = 40.4;
 constexpr double TORQUE_CONSTANT_NM_PER_A = TORQUE_CONSTANT_mNM_PER_A / 1E3;
 constexpr int PWM_RESOLUTION = 12;         // bit
 constexpr int PWM_RESOLUTION_VALUE = 4096; // 2^12
-constexpr double MIN_DUTY = 0.1 * 4096;
-constexpr double MAX_DUTY = 0.9 * 4096;
+constexpr double MIN_DUTY = 0.1 * PWM_RESOLUTION_VALUE;
+constexpr double MAX_DUTY = 0.9 * PWM_RESOLUTION_VALUE;
 constexpr double DUTY_CURRENT_COEF = (MAX_DUTY - MIN_DUTY) / (MAX_CURRENT - MIN_CURRENT);
 
-// cybergear settings
+// cybergear 設定
 constexpr uint8_t NUM_MOTORS = 1;
 constexpr uint8_t MASTER_CAN_ID = 0x00;
 constexpr uint8_t MOTOR_CAN_ID = 0x7F;
 
-// digital input pins
+// digital input ピン
 constexpr uint8_t STOP_BUTTON_PIN = 17;
 
-// adc usage
+// adc チャンネル
+// signal_values[] / converters[] のスロット番号であり、MCP3208の物理チャンネル番号ではない
+// add_channel() の登録順に対応する
 constexpr uint8_t UNUSED_ADC_CH0 = 0;
 constexpr uint8_t FORCE_X_ADC_CH = 1; // 力センサー（X軸）
 constexpr uint8_t FORCE_Y_ADC_CH = 2; // 力センサー（Y軸）

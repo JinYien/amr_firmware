@@ -13,7 +13,9 @@ void signalConverter::set_envelope_filter_cutoff_freq(const double envelope_freq
     this->linear_lowpass.set_envelope_filter_cutoff_freq(envelope_freq);
 }
 
-adcManager::adcManager(const uint16_t vref, const uint8_t adc_cs_pin) : adc(vref, adc_cs_pin), adc_values_to_voltage(ADC_12BIT_TO_VOLTAGE_GRADIENT, ADC_12BIT_TO_VOLTAGE_OFFSET) {}
+adcManager::adcManager(const uint16_t vref, const uint8_t adc_cs_pin)
+    : adc(vref, adc_cs_pin),
+      adc_values_to_voltage(ADC_12BIT_TO_VOLTAGE_GRADIENT, ADC_12BIT_TO_VOLTAGE_OFFSET) {}
 
 void adcManager::add_channel(const Channel channel) { this->channels[this->num_of_channels++] = channel; }
 

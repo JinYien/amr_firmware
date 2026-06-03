@@ -1,8 +1,9 @@
 #include "encoderManager.h"
 
 encoderManager::encoderManager(uint8_t motor_right_qep, uint8_t motor_right_ch_a_pin, uint8_t motor_right_ch_b_pin,
-                               uint8_t motor_left_qep, uint8_t motor_left_ch_a_pin, uint8_t motor_left_ch_b_pin) : qepRight(motor_right_qep, motor_right_ch_a_pin, motor_right_ch_b_pin, 0),
-                                                                                                                   qepLeft(motor_left_qep, motor_left_ch_a_pin, motor_left_ch_b_pin, 0) {}
+                               uint8_t motor_left_qep, uint8_t motor_left_ch_a_pin, uint8_t motor_left_ch_b_pin)
+    : qepRight(motor_right_qep, motor_right_ch_a_pin, motor_right_ch_b_pin, 0),
+      qepLeft(motor_left_qep, motor_left_ch_a_pin, motor_left_ch_b_pin, 0) {}
 
 void encoderManager::setup(const double right_init_angle, const double left_init_angle,
                            const bool right_flexion_is_clockwise, const bool left_flexion_is_clockwise)
