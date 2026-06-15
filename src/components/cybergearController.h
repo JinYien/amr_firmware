@@ -28,10 +28,8 @@ public:
 
     void read_control_params(uint8_t motor_no, CONTROL_PARAMS param, bool wait_reply = true);
     void write_control_params(uint8_t motor_no, CONTROL_PARAMS param, float value, bool wait_reply = false);
-
     void update_motor_params(uint8_t motor_no, char id, int val_t, float val_f, serialManager *ser = nullptr);
 
-    // convenience methods
     void reset_all_motors(bool wait_reply = false);
     void set_all_mech_position_to_zero(bool wait_reply = false);
     void set_all_run_mode(CONTROL_MODES run_mode, bool wait_reply = false);
@@ -39,7 +37,7 @@ public:
 
 private:
     FlexCAN_T4_Base *my_can;
-    void wait_for_reply(unsigned int num_of_replies = 1);
+    bool wait_for_reply(unsigned int num_of_replies = 1, uint32_t timeout_us = 3000);
     void send_command(const cybergearCommand *cmd) const;
 
     cybergearCommand cybergear_cmd{};

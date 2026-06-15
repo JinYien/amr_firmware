@@ -1,7 +1,7 @@
 #include "cybergearController.h"
 
 cybergearController::cybergearController(const uint8_t num_of_motors, const uint8_t master_id, uint8_t *motor_ids,
-                                        FlexCAN_T4_Base *my_can)
+                                         FlexCAN_T4_Base *my_can)
     : num_of_motors(num_of_motors), master_id(master_id), motor_ids(motor_ids), my_can(my_can)
 {
     this->motors = new cybergearVariables[num_of_motors];
@@ -47,7 +47,6 @@ void cybergearController::update_motor_statuses()
     {
         enable_motor(i, false);
     }
-    wait_for_reply(num_of_motors);
 }
 
 void cybergearController::reset_motor(const uint8_t motor_no, const bool wait_reply)
@@ -140,7 +139,6 @@ void cybergearController::on_receive(const CAN_message_t &msg)
 
     if (receive_can_id != this->master_id)
     {
-        this->replies_received += 1;
         return;
     }
 
@@ -153,20 +151,24 @@ void cybergearController::on_receive(const CAN_message_t &msg)
             return;
         }
     }
-
-    this->replies_received += 1;
 }
 
-void cybergearController::wait_for_reply(const unsigned int num_of_replies)
+bool cybergearController::wait_for_reply(const unsigned int num_of_replies, const uint32_t timeout_us)
 {
+    const uint32_t start = micros();
     while (this->replies_received < num_of_replies)
     {
+        if (micros() - start > timeout_us)
+        {
+            this->replies_received = 0;
+            return false;
+        }
     }
     this->replies_received = 0;
+    return true;
 }
 void cybergearController::send_command(const cybergearCommand *cmd) const
 {
-    // CyberGearは29ビットの拡張CAN IDをする：[cmd_id:8][option:16][can_id:8]
     const long id = cmd->cmd_id << 24 | cmd->option << 8 | cmd->can_id;
 
     CAN_message_t msg;
@@ -179,7 +181,15 @@ void cybergearController::send_command(const cybergearCommand *cmd) const
     {
         msg.buf[i] = cmd->data[i];
     }
-    this->my_can->write(msg);
+
+    const uint32_t start = micros();
+    while (this->my_can->write(msg) <= 0)
+    {
+        if (micros() - start > 1000)
+        {
+            break;
+        }
+    }
 }
 
 void cybergearController::update_motor_params(const uint8_t motor_no, const char id, const int val_t, const float val_f,
