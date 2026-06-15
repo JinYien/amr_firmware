@@ -5,7 +5,7 @@ import struct
 from serial.tools import list_ports
 
 NUM_OF_VARIABLES = 12
-CHUNK_SIZE = 10
+CHUNK_SIZE = 1
 STATE_STRUCT = struct.Struct("<cc" + "d" * NUM_OF_VARIABLES * CHUNK_SIZE + "c")
 CMD_INT_DATA_STRUCT = struct.Struct("<q")
 CMD_DOUBLE_DATA_STRUCT = struct.Struct("<d")
